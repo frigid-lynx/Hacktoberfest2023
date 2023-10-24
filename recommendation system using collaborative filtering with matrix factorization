@@ -1,0 +1,35 @@
+import numpy as np
+from sklearn.decomposition import NMF
+
+# Create a user-item matrix (user ratings for items)
+user_item_matrix = np.array([
+    [5, 4, 0, 0, 2],
+    [0, 0, 5, 4, 0],
+    [0, 0, 0, 0, 5],
+    [4, 0, 3, 5, 0],
+    [0, 0, 0, 0, 4]
+])
+
+# Number of latent factors (you can tune this hyperparameter)
+n_components = 2
+
+# Perform Non-Negative Matrix Factorization (NMF)
+model = NMF(n_components=n_components)
+W = model.fit_transform(user_item_matrix)
+H = model.components_
+
+# Reconstruct the user-item matrix from the factorized matrices
+user_item_matrix_reconstructed = np.dot(W, H)
+
+# Recommend items for a specific user (in this case, user 0)
+user_index = 0
+predicted_ratings = np.dot(W[user_index], H)
+recommended_items = np.argsort(predicted_ratings)[::-1]
+
+print("Original User-Item Matrix:")
+print(user_item_matrix)
+
+print("Reconstructed User-Item Matrix:")
+print(user_item_matrix_reconstructed)
+
+print(f"Recommended items for User {user_index}: {recommended_items}")
