@@ -1,0 +1,25 @@
+import numpy as np
+from sklearn.ensemble import IsolationForest
+import matplotlib.pyplot as plt
+
+# Generate synthetic data with anomalies
+np.random.seed(42)
+data = np.random.randn(1000, 2)
+anomalies = 5 * np.random.randn(20, 2)
+data[900:920] = anomalies
+
+# Fit an Isolation Forest model
+model = IsolationForest(contamination=0.02, random_state=42)
+model.fit(data)
+
+# Predict anomalies
+predictions = model.predict(data)
+anomaly_indices = np.where(predictions == -1)
+
+# Plot the data points and anomalies
+plt.figure(figsize=(10, 6))
+plt.scatter(data[:, 0], data[:, 1], c='b', s=20, label='Normal Data')
+plt.scatter(data[anomaly_indices, 0], data[anomaly_indices, 1], c='r', s=50, marker='x', label='Anomalies')
+plt.title('Isolation Forest Anomaly Detection')
+plt.legend()
+plt.show()
