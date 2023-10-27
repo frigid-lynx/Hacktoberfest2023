@@ -1,0 +1,32 @@
+class Graph:
+    def __init__(self):
+        self.graph = {}
+
+    def add_edge(self, node, neighbor):
+        if node not in self.graph:
+            self.graph[node] = []
+        self.graph[node].append(neighbor)
+
+    def dfs(self, start):
+        visited = set()
+
+        def dfs_recursive(node):
+            if node not in visited:
+                print(node)
+                visited.add(node)
+                if node in self.graph:
+                    for neighbor in self.graph[node]:
+                        dfs_recursive(neighbor)
+
+        dfs_recursive(start)
+
+# Example usage:
+my_graph = Graph()
+my_graph.add_edge('A', 'B')
+my_graph.add_edge('A', 'C')
+my_graph.add_edge('B', 'D')
+my_graph.add_edge('D', 'E')
+my_graph.add_edge('C', 'F')
+
+print("Depth-First Search:")
+my_graph.dfs('A')
